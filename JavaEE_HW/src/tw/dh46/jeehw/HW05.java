@@ -2,6 +2,7 @@ package tw.dh46.jeehw;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,6 +47,24 @@ public class HW05 extends HttpServlet {
 		// 讓瀏覽器知道資料類型(務必在writer前先做)
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter writer = response.getWriter();
+		
+		Enumeration<String> params = request.getParameterNames();	// 抓取所有參數名稱
+		while (params.hasMoreElements()) {
+			String param = params.nextElement();
+			String value = request.getParameter(param); // 取得每個參數 (若有隱藏欄位也可撈出, 建議都可撈一下!)
+			String nvalue = new String(value.getBytes("ISO8859-1"), "UTF8"); //	轉換編碼
+			writer.append(param+": "+ nvalue + " ( "+ value+ " )"+"<br>");
+			
+			/*	收到的中文字輸出後有亂碼	=>解決方案?
+			 *	
+			 *	先知道=>網路傳輸預設編碼是ISO8859-1 
+			 *	
+			 *	把輸入的資料轉換成byte陣列(設定為原始編碼)
+			 *	再轉成需要的編碼字串
+			 */
+			
+		}
+		
 		// 輸出
 		writer.append("<h1>歡迎登入本系統</h1>");
 		writer.flush();
