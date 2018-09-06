@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF8">
+<title>JavaEE_HW04</title>
+</head>
+<body>
+	<h3>JavaEE_HW04</h3>
+	<hr>
+	<ol>
+		<li>為什麼按鈕會有提交, 是瀏覽器預設填入。可調整value屬性自訂</li>
+		<li>form action => 決定資料交給誰處理</li>
+		<li>name="account" 回傳資料的參數名稱; value="" 參數/ value = 輸入值</li>
+		<li>http://localhost:8080/JavaEE_HW/HW05?account=aaaaaaaaa&password=bbbbbbb 注意問號後的資訊</li>
+		<li>form method="get"/"post" 兩種方法。用戶端決定何種傳遞方式</li>
+	</ol>
+	
+	<hr>
+	<form action="HW05" method="post">
+		Account: <input type="text" name="account">
+		<br>
+		<br>
+		Password: <input type="password" name="password">
+		<input type="submit" value="登入">
+	</form>
+</body>
+</html>
