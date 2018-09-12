@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /*
  * 	20180908PM1 HW22_PWCheck
@@ -33,7 +34,7 @@ public class HW22_PWCheck extends HttpServlet {
 //		System.out.println("p2: " + p2);
 //		System.out.println(BCrypt.checkpw(p3, p2));
 		
-		doPost(request, response);
+		//	doPost(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -70,17 +71,30 @@ public class HW22_PWCheck extends HttpServlet {
 			if (rs.next()) {
 				String src = rs.getString("password");
 				if (HW_PWCheck.checkPassword(src, password)) {
-					String realname = rs.getString("realname");
-					out.println(realname + " 歡迎回來!");
+//					String realname = rs.getString("realname");
+//					out.println(realname + " 歡迎回來!");
+					
+					// 結合 HW31,32
+					HttpSession session = request.getSession();
+					HWMember member = new HWMember(rs.getString("realname"), 30, rs.getString("account"));
+					session.setAttribute("member", member);
+					response.sendRedirect("HW32_Session2");
 				} else {
-					out.println("登入失敗: 請重新確認帳號與密碼。");
+					//	out.println("登入失敗: 請重新確認帳號與密碼。");
+					
+					// 結合 HW31,32
+					response.sendRedirect("hw22_login.html");
 				}
 				
 			} else {
-				out.println("登入失敗: 請重新確認帳號與密碼。");
+				//	out.println("登入失敗: 請重新確認帳號與密碼。");
+				
+				// 結合 HW31,32
+				response.sendRedirect("hw22_login.html");
 			}
 		} catch (Exception e) {
-			out.println("登入失敗: " + e.toString());
+			//	out.println("登入失敗: " + e.toString());
+			response.sendRedirect("hw22_login.html");
 		}
 		
 	}

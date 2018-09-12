@@ -26,8 +26,9 @@ import javax.servlet.http.HttpServletResponse;
  *	密碼要加密
  *
  *	cookies是針對各自的瀏覽器, 不同的瀏覽器擁有不同的localstorage & cookies & session
- *	用戶端有可能限制cookie存取, 造成開發上的困難
- *	
+ *	cookie 也有安全性上的疑慮, 所以用戶端有可能限制cookie存取, 造成開發上的困難
+ *	==> 解法: 透過Server端處理, 記憶本次的連線狀態. 
+ *	===> Session
  *	
  */
 @WebServlet("/HW28_Cookie2")
