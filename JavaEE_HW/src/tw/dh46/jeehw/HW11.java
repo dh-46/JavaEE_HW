@@ -72,16 +72,21 @@ public class HW11 extends HttpServlet {
 			// 建立串接/串流
 			InputStream ins = upload.getInputStream();
 			BufferedInputStream bin = new BufferedInputStream(ins);
+			FileOutputStream fout = new FileOutputStream(new File(uploadPath, fileName));
 			
 			// 讀到暫存
-			byte[] buf = bin.readAllBytes();
+			//byte[] buf = bin.readAllBytes();
+			byte[] buf = new byte[4096];
+			int length;
+			while ((length=bin.read(buf)) != -1) {
+				fout.write(buf,0,length);
+			}
+			
 			// 關閉串流
 			bin.close();
 			
-			FileOutputStream fout = new FileOutputStream(new File(uploadPath, fileName));
-			
 			// 寫出檔案
-			fout.write(buf);
+			
 			fout.flush();
 			fout.close();
 			
