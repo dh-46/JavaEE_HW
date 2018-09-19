@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="error.jsp"%>
     
 <!DOCTYPE html>
 <html>
@@ -19,7 +19,7 @@
 		3.	題目要與後端產生互動(資料存取/Opendata)
 		4.	不要為了展現特定技術而選擇過難的題目
 		5.	做A題目可以充分展現B技術
-		6.	
+		6.	第三方library (AR/影像辨識)
 	 -->
 	<hr>
 	<form method="post">
