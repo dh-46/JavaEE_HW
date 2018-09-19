@@ -21,7 +21,7 @@
 <title>HW63_taglib (標籤庫)</title>
 </head>
 <body>
-	<h2>HW63_taglib (標籤庫)</h2>
+	<h2>HW63_taglib (c:set)</h2>
 	<hr>
 	<ol>
 		<!-- https://tomcat.apache.org/download-taglibs.cgi 
