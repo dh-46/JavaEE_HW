@@ -12,7 +12,7 @@
 <title>HW83_Upload(Receive)</title>
 </head>
 <body>
-	<h3>HW83_Upload (0916PM1)</h3>
+	<h3>HW83_Upload (0916PM1 Apache 00:27:56)</h3>
 	<hr>
 	<%
 		String uploadPath = pageContext.getServletContext().getInitParameter("upload-dir");
@@ -20,8 +20,10 @@
 		
 		
 		
-		//	看API
+		//	看API Apache
 		//	建構式 ServletFileUpload(FileItemFactory)
+		//	DiskFileItemFactory(最大值:8*1024*1024[8MB],File); 
+		//	複習一下檔案計算格式: http://www.wu.ece.ufl.edu/links/dataRate/DataMeasurementChart.html
 		//	建立上傳的物件實體
 		DiskFileItemFactory factory = new DiskFileItemFactory(8*1024*1024, new File(uploadPath));
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -30,19 +32,38 @@
 		//	解析上傳物件成List
 		int i = 1;
 		List<FileItem> items= upload.parseRequest(request);
+		
 		for (FileItem item : items) {
+			//	檔案資訊
 			String name = item.getName();
 			String type = item.getContentType();
 			String field = item.getFieldName();
 			long size = item.getSize();
-			//	out.println(name+":" + type+":" + field +":" + size+"<br>");
-			if (size > 0) {
-				item.write(new File(uploadPath, "p" + i + ".jpg"));
-				i++;
+			
+			//	抓文字資料
+			String s = item.getString();
+			
+			//	out.println(name+":" + type+":" + field +":" + size+ ":" + s +"<br>");
+			
+			if (name == null) {
+				//	如果上傳的是字串, 則印出.
+				out.println(field + ":" + s + "<br>");
+			} else {
+				if (size > 0) {
+					//	寫出檔案
+					//	實務上 i 可以置換成資料庫中取得的lastId.
+					item.write(new File(uploadPath, "p" + i + ".jpg"));
+					i++;
+				}
 			}
+			
+			
 		}
+		
 		//	檔案大圖不建議用BLOB丟資料庫
 		out.println("Upload OK");
+		
+		//	圖片上傳另一招: 影像轉換成Base64 String再上傳, 伺服器收到再解碼轉換回圖片
 	%>
 </body>
 </html>
