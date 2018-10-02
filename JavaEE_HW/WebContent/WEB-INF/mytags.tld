@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib version="2.0" xmlns="http://java.sun.com/xml/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+	<tlib-version>2.0</tlib-version>
+	<jsp-version>2.0</jsp-version>
+	<short-name>mytags</short-name>
+	<!-- <uri></uri> -->
+	<description>
+		This tag library contains several tag extensions
+		useful for formatting content for HTML.
+	</description>
+	<tag>
+		<!-- 標籤名稱 -->
+		<name>HelloDH</name>
+		<!-- package name -->
+		<tag-class>tw.dh46.jeehw.MyTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	<tag>
+		<!-- 標籤名稱 -->
+		<name>MyTag2</name>
+		<!-- package name -->
+		<tag-class>tw.dh46.jeehw.MyTag2</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	<tag>
+		<!-- 標籤名稱 -->
+		<name>MyTag3</name>
+		<!-- package name -->
+		<tag-class>tw.dh46.jeehw.MyTag3</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>itemName</name>
+		</attribute>
+		<attribute>
+			<name>price</name>
+		</attribute>
+		<!-- 多數的是用這個 <attributes> -->
+	</tag>
+</taglib>

@@ -1,0 +1,25 @@
+20180929AM1_Custom Tags
+1.	建立標籤庫
+	檔案位置: WEB-INF/tags
+2.	建立標籤檔
+	一個檔案一個標籤
+	預設: xxx.tag (附檔名不用.tag也可)
+	tag檔可寫普通文字與JSP
+3.	import custom tags 
+	(uri="遠端位址")
+	<%@ taglib tagdir="檔案位置" prefix="" %>
+
+**	檔案位置注意: 
+
+4.	自訂標籤好處: 將複雜的邏輯運算寫在標籤檔中, 有利前端開發者使用.
+
+5.	WebContent: 擺網站會用到的資料? WEB-INF (目錄資訊參考資料: https://openhome.cc/Gossip/ServletJSP/DirectoryStructure.html)
+
+6.	標籤有輸出(產出特定字?) 也有沒輸出(只做動作: 資料庫連線)
+
+7.	設定標籤屬性
+	<%@ attribute name="user" required="true"%>
+	
+8.	常用功能寫成標籤: 提升程式維護性.
+
+9.	也可以用Java 類別寫	=>繼承SimpleTagSupport
