@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HW_Ajax09(XML)</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//	檢測瀏覽器是否支援XMLHttpRequest
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			// code for modern browsers
+			xmlhttp = new XMLHttpRequest();
+			console.log("Debug1");
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			console.log("Debug2");
+		}
+
+		if (xmlhttp == null) {
+			console.log("Not Support");
+		} else {
+			console.log("Support");
+		}
+		
+		function test1() {
+			
+		}
+	</script>
+	
+	<h2>HW_Ajax09_0930PM1 (hw_books.xml)</h2>
+	<button onclick="test1()">Click</button>
+	<hr>
+	<table border="1" width="80%" id="table">
+		<tr>
+			<th>書名</th>
+			<th>作者</th>
+			<th>價錢</th>
+		</tr>
+		<tr>
+			<td rowspan="2">Book1</td>
+			<td>John1</td>
+			<td rowspan="2">$250</td>
+		</tr>
+		<tr>
+			<td>John2</td>
+		</tr>
+		<tr>
+			<td rowspan="3">Book2</td>
+			<td>Allen1</td>
+			<td rowspan="3">$450</td>
+		</tr>
+		<tr>
+			<td>Allen2</td>
+		</tr>
+		<tr>
+			<td>Allen3</td>
+		</tr>
+	</table>
+</body>
+</html>

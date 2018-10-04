@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HW_Ajax07_0930PM1</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//	檢測瀏覽器是否支援XMLHttpRequest
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			// code for modern browsers
+			xmlhttp = new XMLHttpRequest();
+			console.log("Debug1");
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			console.log("Debug2");
+		}
+
+		if (xmlhttp == null) {
+			console.log("Not Support");
+		} else {
+			console.log("Support");
+		}
+		
+		//	06:00 Click按鈕觸發事件
+		//	觀察表格內容結構
+		function test1(){
+			//	抓出表格結構
+			var table = document.getElementById("table");
+			//	Review JavaScript 'for in'
+			//	註: JS裡的物件都可以for in 看看
+			/*
+			for (var v in table) {
+				console.log(v + " : " + table[v]);
+			}
+			*/
+			
+			var tc = table.children;
+			for ( var vv in tc) {
+				// console.log(vv + " : " + tc[vv]);
+				for (var vvv in vv) {
+					console.log(vvv + " : " + vv[vvv]);
+				};
+			};
+			
+		}
+		
+		//	新增rowV1
+		function addRow() {
+			// Review: https://www.w3schools.com/jsref/met_table_insertrow.asp
+			var table = document.getElementById('table');
+			//	新增最新的一列 (The value of -1 can also be used, this results in a new row being inserted at the last position.)
+			var row = table.insertRow(-1);
+			
+			for (var i=0; i < 3; i++) {
+				var cell = row.insertCell(i);
+				cell.innerHTML = "NEW DATA" + i;
+			};
+		}
+		
+		//	新增rowV2 (串上後端資料)
+		function addRowV2() {
+			// Review: https://www.w3schools.com/jsref/met_table_insertrow.asp
+			var table = document.getElementById('table');
+			//	新增最新的一列 (The value of -1 can also be used, this results in a new row being inserted at the last position.)
+			var row = table.insertRow(-1);
+			
+			for (var i=0; i < 3; i++) {
+				var cell = row.insertCell(i);
+				console.log(xmlhttp.responseText);
+				//	呼叫parseData()去解析後端回傳的資料
+				cell.innerHTML = parseData()[i];
+			}
+		}
+		
+		//	從後端取得資料
+		function getData() {
+			xmlhttp.open('GET','hw_ajax08.jsp',true);
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				if (status == 200 & state == 4) {
+					//	連線成功呼叫addRowV2();
+					addRowV2();
+				}
+			}
+			xmlhttp.send();
+		}
+		
+		//	解析後端傳來的資料
+		function parseData() {
+			//	把回傳的資料利用trim()去掉空白
+			var response = xmlhttp.responseText.trim();
+			//	利用 split()把逗號去掉 會回傳陣列
+			var data = response.split(',');
+			
+			//	傳出data
+			return data;
+		}
+		
+	</script>
+	<h2>HW_Ajax07_0930PM1</h2>
+	<button onclick="test1()">Click</button>
+	<button onclick="addRow()">Add a row</button>
+	<button onclick="getData()">Get Data</button>
+	<hr>
+	<table border="1" width="80%" id="table">
+		<tr>
+			<th>Field1</th>
+			<th>Field2</th>
+			<th>Field3</th>
+		</tr>
+		<tr>
+			<td>data1</td>
+			<td>data2</td>
+			<td>data3</td>
+		</tr>
+	</table>
+</body>
+</html>
