@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HW_Ajax03</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//	檢測瀏覽器是否支援XMLHttpRequest
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			// code for modern browsers
+			xmlhttp = new XMLHttpRequest();
+			console.log("Debug1");
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			console.log("Debug2");
+		}
+		
+		if (xmlhttp == null) {
+			console.log("Not Support");
+		} else {
+			console.log("Support");
+		}
+		
+		//	操作XMLHttpRequest
+		
+		
+		function cal() {
+			//	取得輸入值x,y
+			var x = document.getElementById('x').value;
+			var y = document.getElementById('y').value;
+			
+			//	連線到哪裡, 並帶參數
+			var url = "hw_ajax04.jsp?x=" + x + "&y=" + y;
+			
+			//	指定非同步要求
+			xmlhttp.open('GET',url,true);
+			//	狀態(readyState: 0/1/2/3/4)改變時觸發
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				if (state == 4 && status == 200) {
+					//	代表要求有成功傳到後端, 而且有拿到回應
+					document.getElementById('result').innerHTML = xmlhttp.responseText;
+				}
+			}
+			//	送出
+			xmlhttp.send();
+		}
+		
+	</script>
+	
+	<h3>AJAX_Calculator 0930AM2</h3>
+	<hr>
+	後端運算動態輸出到前端, 資料傳遞預設都是字串<br>
+	<input type="text" id='x'/> + 
+	<input type="text" id='y'/>
+	<input type="button" onclick="cal()" value="="/>
+	<span id='result'></span>
+</body>
+</html>

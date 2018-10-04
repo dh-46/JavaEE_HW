@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HW_Ajax01</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//	檢測瀏覽器是否支援XMLHttpRequest
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			// code for modern browsers
+			xmlhttp = new XMLHttpRequest();
+			console.log("Debug1");
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			console.log("Debug2");
+		}
+		
+		if (xmlhttp == null) {
+			console.log("Not Support");
+		} else {
+			console.log("Support");
+		}
+		
+		//	目前xmlhttp的狀態
+		//	alert('Now: ' + xmlhttp.readState);
+		/*
+			0: request not initialized 
+			1: server connection established
+			2: request received 
+			3: processing request 
+			**4: request finished and response is ready
+			//	一般只在意4的狀態, 代表要求完成有回來
+		*/
+		
+		//	操作XMLHttpRequest
+		//	狀態改變時觸發
+		xmlhttp.onreadystatechange = callBack2;
+		
+		function callBack() {
+			var state = xmlhttp.readyState;
+			var id1 = document.getElementById('id1');
+			var id2 = document.getElementById('id2');
+			var id3 = document.getElementById('id3');
+			var id4 = document.getElementById('id4');
+		
+			switch (state) {
+			case 1: id1.innerHTML = "OK1"; break;
+			case 2: id2.innerHTML = "OK2"; break;
+			case 3: id3.innerHTML = "OK3"; break;
+			case 4: id4.innerHTML = "OK4"; break;
+			}
+		}
+		
+		function callBack2() {
+			var state = xmlhttp.readyState;
+			var status = xmlhttp.status;
+			/*
+				status: 連線狀態
+				200: "OK"
+				403: "Forbidden"
+				404: "Not Found"
+				透過status的狀態來決定是否解析回傳的內容
+			*/
+			if (state == 4 && status == 200) {
+				//	連線OK
+				console.log("OK");
+				
+				//	36:32 按下按鈕後拿到hw_ajax02.jsp的文字內容, 並替換掉title
+				document.getElementById('title').innerHTML = xmlhttp.responseText;
+			} else {
+				console.log("Status: " + status);
+			}
+		}
+		
+		
+		function test1() {
+			//	指定非同步要求
+			xmlhttp.open('GET','hw_ajax02.jsp',true);
+			
+			//	39:00 在發送之前夾帶相關資訊給後端
+			
+			//	sendRequestHeader(): Adds a label/value pair to the header to be sent
+			//	key:value的header訊息
+			xmlhttp.setRequestHeader("user-agent", "DH_Ajax");
+			xmlhttp.setRequestHeader("Hello","Yeah");
+			
+			//	送出
+			xmlhttp.send();
+		}
+		
+	</script>
+	
+	<h3>AJAX (Asynchronous JavaScript And XML) 0930AM2</h3>
+	<hr>
+	<ol>
+		<li>網頁載入後從後端撈資料</li>
+		<li>不用重新載入網頁就可以更新資料</li>
+		<li>在背景傳送資料到後端</li>
+		<li>目前主流格式JSON, 因為XML的格式較占空間.</li>
+		<li>週期任務/按鈕載入...事件觸發</li>
+		<li>多次的交談過程</li>
+		<li>預設情況不可Cross Origin Domain --> 前端決定可不可以跨</li>
+	</ol>
+	<hr>
+	<button type="button" onclick="test1()">Test</button><br>
+	1. <span id="id1"></span><br>
+	2. <span id="id2"></span><br>
+	3. <span id="id3"></span><br>
+	4. <span id="id4"></span><br>
+	<hr>
+	<div id="title"></div>
+	<hr>
+</body>
+</html>
