@@ -17,20 +17,120 @@
 			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 			console.log("Debug2");
 		}
-
-		if (xmlhttp == null) {
-			console.log("Not Support");
-		} else {
-			console.log("Support");
-		}
+		
 		
 		function test1() {
-			
+			xmlhttp.open('GET','hw_ajax09.xml',true);
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				var table = document.getElementById('table');
+				
+				if (status == 200 & state == 4) {
+					//	連線成功
+					//	取得回傳的XML
+					var xml = xmlhttp.responseXML;
+					//	抓出XML裡的book元素
+					var books = xml.getElementsByTagName('book');
+					
+					//	解析XML (尋訪books => 一層一層)
+					for (var i=0 ; i<books.length ; i++) {
+						//	取出一本書
+						var book = books[i];
+						
+						//	該書的title物件
+						var titleObj = book.getElementsByTagName('title');
+						//	console.log("title = " + titleObj[0].innerHTML);
+						
+						//	取價格物件
+						var priceObj = book.getElementsByTagName('price');
+						//	console.log("price = " + priceObj[0].innerHTML);
+						
+						//	從book下拿出作者物件 (物件下還有多位作者name,比較複雜)
+						var authorsObj = book.getElementsByTagName('authors');
+						//	console.log("author = " + authorsObj[0].innerHTML);
+						
+						
+						//	為什麼用陣列方式取
+						//	=>[XML裡的元素可能有多個] 
+						//	=>會被擺在陣列內, 故即便只有一個也一樣要用陣列方式存取
+						
+						//	拿到title的內容了
+						var title = titleObj[0].innerHTML;
+						//	價格內容
+						var price = priceObj[0].innerHTML;
+						
+						//	拿出一本書裡面的作者物件
+						var author = authorsObj[0];
+						//	再往下找書的每個作者名字
+						var names = author.getElementsByTagName('name');
+						
+						//	尋訪裡面的name
+						for (var j=0; j<names.length;j++) {
+							//	拿到每個名字
+							var name = names[j].innerHTML;
+							
+							//	放到表格中
+							//	新增列: 新增在最下面一列
+							var tr = table.insertRow(-1);
+							
+							if (j==0) {
+								//	j==0 該本書表格中的第一列
+								//	因為有跨欄位rowSpan 所以j==0時要特別處理
+								var tdTitle = tr.insertCell(0);
+								//	兩個名字 所以書名要跨兩個欄位
+								tdTitle.rowSpan = names.length;
+								//	把書名放進去書名欄
+								tdTitle.innerHTML = title;
+								
+								//	姓名欄不用rowSpan
+								var tdName = tr.insertCell(1);
+								tdName.innerHTML = name;
+								
+								//	價格欄
+								var tdPrice = tr.insertCell(2);
+								tdPrice.rowSpan = names.length;
+								tdPrice.innerHTML = price;
+							} else {
+								//	第一列的時候都把這本書的書名跟價格欄位完成了
+								//	後續只要把作者名補上就可
+								//	補上的那一列只有一個cell要補(前面有rowSpan), 所以index是0.
+								var tdName = tr.insertCell(0);
+								tdName.innerHTML = name;
+							}
+						}
+						
+					}
+				}
+			}
+			xmlhttp.send();
+		}
+		
+		
+		//	0930PM2: 後端改以文字內容(ajax10.jsp)傳送 (網頁的內容完全交給後端產出)
+		function test2(){
+			xmlhttp.open('GET','hw_ajax10.jsp',true);
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				var table = document.getElementById('table');
+				
+				if (status == 200 & state == 4) {
+					//	連線成功
+					//	取得回傳的Text
+					var data = xmlhttp.responseText;
+					
+					table.innerHTML = data;
+					//	會把表格全部更新
+					}
+				}
+			xmlhttp.send();
 		}
 	</script>
 	
 	<h2>HW_Ajax09_0930PM1 (hw_books.xml)</h2>
-	<button onclick="test1()">Click</button>
+	<button onclick="test1()">單列更新(來源XML格式)</button>
+	<button onclick="test2()">全部更新(來源Text格式)</button>
 	<hr>
 	<table border="1" width="80%" id="table">
 		<tr>
