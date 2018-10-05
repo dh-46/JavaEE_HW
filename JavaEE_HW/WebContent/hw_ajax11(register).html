@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajax11_動態檢查帳號是否有重複</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+			//	moder browser
+			xmlhttp = new XMLHttpRequest();
+		} else {
+			//	old ones
+			xmlhttp = new AcitvexObject("Microsoft.XMLHTTP");
+		}
+		
+		function checkAccount(){
+			console.log('checking');
+			var mesg = document.getElementById('mesg');
+			var account = document.getElementById('account').value;
+			
+			//	建立連線
+			xmlhttp.open('GET','hw_ajax12.jsp?account=' + account,true);
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				if (state == 4 && status == 200) {
+					//	連線成功
+					//console.log("OK");
+					var data = xmlhttp.responseText.trim();
+					console.log(data + " : " + data.length);
+					
+					
+					if (data == '0' && account != '') {
+						//	帳號沒重複也不為空
+						mesg.innerHTML = "帳號可以使用";
+					} else if (account == '') {
+						mesg.innerHTML = "請輸入帳號";
+					} else {
+						mesg.innerHTML = "請選擇其他帳號";
+					} 
+				}
+			}
+			xmlhttp.send();
+			
+		}
+		
+		function submitForm() {
+			console.log('submit Form');
+			var mesg = document.getElementById('mesg');
+			var account = document.getElementById('account').value;
+			var form = document.getElementById('myForm');
+			var password = document.getElementById('password').value;
+			
+			//	建立連線(假設把密碼也丟過去)
+			xmlhttp.open('GET','hw_ajax12.jsp?account=' + account + '&password=' + password,true);
+			xmlhttp.onreadystatechange = function() {
+				var state = xmlhttp.readyState;
+				var status = xmlhttp.status;
+				if (state == 4 && status == 200) {
+					//	連線成功
+					//console.log("OK");
+					var data = xmlhttp.responseText.trim();
+					console.log(data + " : " + data.length);
+					
+					//	帳號不重複 && 帳密不為空才可送出
+					if (data == '0' && account != '' && password != '') {
+						//	再檢查一次使用者送出的帳號, OK就送出
+						form.submit();
+					}
+				}
+			}
+			xmlhttp.send();
+			return false;
+		}
+		
+		
+		function myTrim(x) {
+			//	用正規表示法去除前後空白  針對部分不支援trim方法的瀏覽器
+			return x.replace(/^\s+|\s+$/gm,'');
+			//	備註: 練習時沒有出現如課堂中發生的trim方法失敗的情況, 故沒有使用myTrim()
+		}
+	</script>
+
+
+	<h3>Ajax11_動態檢查帳號是否有重複 (0930PM2)</h3>
+	<p>當使用者填寫帳號欄位，會主動向資料庫查詢是否該帳號已有人使用。<br>
+	前端若能排除部分輸入錯誤是最好, 後端仍要檢查只是就可不用太複雜</p>
+	<hr>
+	<!--
+		如何避免使用者沒打資料就送出: onsubmit方法 	用return 的方法避免漏洞	 
+		兩個機制: 輸入時檢查&離開時檢查
+		
+		非同步的處理: return要做在哪!?
+		
+		檢查交給12
+		目的地交給13
+	-->
+	<form action="hw_ajax13.jsp" onsubmit="return submitForm()" id="myForm">
+		Account: <input type="text" name="account" id="account" onblur="checkAccount()" ><span id="mesg"></span><br><br>
+		Password: <input type="password" name="password" id="password" ><br><br>
+		<input type="submit" value="Register">
+	</form>
+	
+	
+</body>
+</html>

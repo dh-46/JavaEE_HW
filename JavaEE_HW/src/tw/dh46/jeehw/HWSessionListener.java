@@ -18,7 +18,8 @@ import javax.servlet.http.HttpSessionListener;
  * 	=>但是 過濾器filter可以做過濾與判斷
  */
 
-@WebListener
+//	先註解避免干擾
+//	@WebListener
 public class HWSessionListener implements HttpSessionListener{
 
 	@Override
